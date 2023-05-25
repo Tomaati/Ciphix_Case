@@ -2,6 +2,7 @@
 This module is used for cleaning up the tweets, allowing them to properly be analysed using NLP and ML.
 """
 import re
+
 import spacy
 
 at_pattern = '@([^ ]+)'
@@ -44,11 +45,12 @@ class Preprocessor:
 
         # Count the words, and only keep relevant text by removing short tweets.
         min_count = 3
-        self.data['Word_Count'] = self.data['Clean'].str.split(' ').apply(len)
-        self.data = self.data[self.data["Word_Count"] > min_count]
+        # self.data['Word_Count'] = self.data['Clean'].str.split(' ').str.len()
+        self.data = self.data[self.data['Clean'].str.split(' ').str.len() > min_count]
 
         print('Done Checking Word Count')
 
+        # Pre-process the data using Spacy
         self.data['Preprocessed'] = self.preprocess(self.data['Clean'])
 
         print('Done Preprocessing the data')
@@ -61,7 +63,7 @@ class Preprocessor:
                 token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
                                                           and token not in self.model.Defaults.stop_words))
             output.append(lemma)
-            print(f'Done with output {len(output)}: {lemma}.')
+            print(f'Done with output {len(output)}.')
         return output
 
 
@@ -74,10 +76,11 @@ def clean_text(text):
     # Remove any twitter_handles, tags, urls, newlines, and other special characters.
     text = generic_re.sub(r'', text)
 
-    # Remove any emoji's that can be found in the text
+    # Remove any emoji's that can be found in the text.
     text = emoji_pattern.sub(r'', text)
 
     # Now we want to remove all the other unnecessary characters within the text.
+    # Note, this also remove all emojis.
     text = re.findall(r'[^\W\d]+', text)
 
     return ' '.join(text)
