@@ -1,0 +1,74 @@
+"""
+This module is used for cleaning up the tweets, allowing them to properly be analysed using NLP and ML.
+"""
+import re
+import spacy
+
+at_pattern = '@([^ ]+)'
+tag_pattern = '[\^\-\*][A-Z\d]+$'
+url_pattern = 'https?://\S+|www\.\S+'
+newline_pattern = '\n'
+special_pattern = '[#\'\"]'
+
+emoji_pattern = re.compile("["
+                           u"\U0001F600-\U0001F64F"  # Emoticons
+                           u"\U0001F300-\U0001F5FF"  # Symbols & pictographs
+                           u"\U0001F680-\U0001F6FF"  # Transport & map symbols
+                           u"\U0001F1E0-\U0001F1FF"  # Flags (iOS)
+                           "]+", flags=re.UNICODE)
+
+generic_re = re.compile('|'.join([at_pattern, tag_pattern, url_pattern, newline_pattern, special_pattern]))
+
+
+class Preprocessor:
+    """
+    This class prepares the data for the Machine Learning algorithms that can be used to determine the top 10 topics.
+    """
+
+    def __init__(self, df):
+        self.model = spacy.load('en_core_web_sm')
+        self.data = df
+
+        self.clean_df()
+
+    def clean_df(self):
+        self.data['Clean'] = self.data['Text'].apply(clean_text)
+
+        # Check if a username is related to a company or a customer, only keep customers.
+        self.data['Is_Employee'] = self.data['Tag'].str.isnumeric()
+        self.data = self.data[~self.data['Is_Employee']]
+
+        # Count the words, and only keep relevant text by removing short tweets.
+        min_count = 3
+        self.data['Word_Count'] = self.data['Clean'].str.split(' ').apply(len)
+        self.data = self.data[self.data["Word_Count"] > min_count]
+
+        self.data['Preprocessed'] = self.preprocess(self.data['Clean'])
+
+    def preprocess(self, text):
+        docs = self.model.pipe(text, n_process=10)
+        output = []
+        for doc in docs:
+            lemma = " ".join(
+                token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
+                                                          and token not in self.model.Defaults.stop_words))
+            output.append(lemma)
+        return output
+
+
+def clean_text(text):
+    """
+    Combines all regex for one cleaning method.
+    :param text: The text to check.
+    :return: The fully cleaned text.
+    """
+    # Remove any twitter_handles, tags, urls, newlines, and other special characters.
+    text = generic_re.sub(r'', text)
+
+    # Remove any emoji's that can be found in the text
+    text = emoji_pattern.sub(r'', text)
+
+    # Now we want to remove all the other unnecessary characters within the text.
+    text = re.findall(r'[^\W\d]+', text)
+
+    return ' '.join(text)
