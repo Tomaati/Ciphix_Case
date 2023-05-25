@@ -7,10 +7,13 @@ import pandas as pd
 
 from Preprocessor import Preprocessor
 
+import time
+
 ROOT_DIR = os.path.dirname(__file__)
 DEBUG = False
 
 if __name__ == '__main__':
+    start_time = time.time()
     nrows = 1000 if DEBUG else None
     df = pd.read_csv(f'{ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
 
@@ -24,3 +27,4 @@ if __name__ == '__main__':
     preprocessor = Preprocessor(df)
 
     print(preprocessor.data['Preprocessed'])
+    print(f'\n My program took {time.time() - start_time} seconds to run.')

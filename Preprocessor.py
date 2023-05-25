@@ -34,16 +34,24 @@ class Preprocessor:
     def clean_df(self):
         self.data['Clean'] = self.data['Text'].apply(clean_text)
 
+        print('Done Cleaning')
+
         # Check if a username is related to a company or a customer, only keep customers.
         self.data['Is_Employee'] = self.data['Tag'].str.isnumeric()
         self.data = self.data[~self.data['Is_Employee']]
+
+        print('Done Checking Employees')
 
         # Count the words, and only keep relevant text by removing short tweets.
         min_count = 3
         self.data['Word_Count'] = self.data['Clean'].str.split(' ').apply(len)
         self.data = self.data[self.data["Word_Count"] > min_count]
 
+        print('Done Checking Word Count')
+
         self.data['Preprocessed'] = self.preprocess(self.data['Clean'])
+
+        print('Done Preprocessing the data')
 
     def preprocess(self, text):
         docs = self.model.pipe(text, n_process=10)
@@ -53,6 +61,7 @@ class Preprocessor:
                 token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
                                                           and token not in self.model.Defaults.stop_words))
             output.append(lemma)
+            print(f'Done with output {len(output)}: {lemma}.')
         return output
 
 
