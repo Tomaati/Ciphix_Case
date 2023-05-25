@@ -8,9 +8,10 @@ import pandas as pd
 from Preprocessor import Preprocessor
 
 ROOT_DIR = os.path.dirname(__file__)
+DEBUG = False
 
 if __name__ == '__main__':
-    nrows = 1000
+    nrows = 1000 if DEBUG else None
     df = pd.read_csv(f'{ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
 
     # Create a readable dataframe containing only the username and text.
