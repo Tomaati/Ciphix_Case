@@ -65,12 +65,12 @@ class Preprocessor:
     def preprocess(self, text):
         docs = self.model.pipe(text, n_process=10)
         output = []
+
         for doc in docs:
             lemma = " ".join(
                 token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
                                                           and token not in self.model.Defaults.stop_words))
-            output.append(lemma)
-            print(f'Done with output {len(output)}.')
+            output.append(lemma.lower())
         return output
 
 

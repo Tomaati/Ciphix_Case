@@ -6,7 +6,10 @@ __pycache__/
 # IDE Stuff
 .idea/
 *.bak
+
+# Data Stuff
 *.csv
+*.joblib
 
 # C extensions
 *.so
