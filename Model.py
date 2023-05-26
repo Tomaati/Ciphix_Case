@@ -21,19 +21,6 @@ class TopicModel:
         self.data_vector = self.vector.fit_transform(self.df['Preprocessed'])
         self.data_nmf = self.nmf.fit_transform(self.data_vector)
 
-    def find_topics(self):
-        res = []
-        for topic in self.nmf.components_:
-            # Sort the topics in reversed order to get the most important first
-            reverse_sorted = topic.argsort()[::-1][:self.topic_count]
-            # Map to the correct words from the vector
-            important_features = [self.vector.get_feature_names_out()[i] for i in reverse_sorted]
-
-            # Add the string to the final result
-            res.append(' '.join(important_features))
-        print(res)
-        return res
-
     def save_model(self):
         joblib.dump(self.nmf, f'{config.ROOT_DIR}\\models\\nmf.joblib')
         joblib.dump(self.vector, f'{config.ROOT_DIR}\\models\\vectorizer.joblib')

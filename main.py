@@ -33,6 +33,18 @@ def pre_process(data):
     return preprocessor.data
 
 
+def train_model(data):
+    """
+    This method trains a model for predicting the top 10 topics from the dataset.
+    :param data: The data to process.
+    """
+    data = pre_process(data)
+    modeller = TopicModel(data)
+    # Save the model
+    if not config.DEBUG:
+        modeller.save_model()
+
+
 if __name__ == '__main__':
     title = 'Please choose what you want to do:'
     options = ['Only Pre-Process', 'Pre-Process and Model', 'Classify Data']
@@ -45,15 +57,15 @@ if __name__ == '__main__':
     df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
 
     # Preprocess the data
-    if index == 0 or index == 1:
+    if index == 0:
         df = pre_process(df)
 
     # Model the data
     if index == 1:
-        modeller = TopicModel(df)
-        topic_classes = modeller.find_topics()
-        # Save the model
-        if not config.DEBUG:
-            modeller.save_model()
+        train_model(df)
+
+    # Predict new data
+    if index == 2:
+        pass
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')
