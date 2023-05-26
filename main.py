@@ -7,9 +7,9 @@ import pandas as pd
 from pick import pick
 
 import config
-from Model import TopicModel
-from Predictor import TopicPredictor
-from Preprocessor import Preprocessor
+from Backend.Model import TopicModel
+from Backend.Predictor import TopicPredictor
+from Backend.Preprocessor import Preprocessor
 
 
 def pre_process(data):
