@@ -46,6 +46,17 @@ def train_model(data):
         modeller.save_model()
 
 
+def predict(text_list):
+    """
+    This method predicts the topics of new conversations.
+    :param text_list: The data to process.
+    """
+    data = pre_process(pd.DataFrame(text_list, dtype=str, columns=['Text']))
+
+    test = TopicPredictor().predict_topic(data)
+    print(test)
+
+
 if __name__ == '__main__':
     title = 'Please choose what you want to do:'
     options = ['Only Pre-Process', 'Pre-Process and Model', 'Classify Data']
@@ -70,8 +81,6 @@ if __name__ == '__main__':
     # Predict new data
     if index == 2:
         text = input('What text do you want to check? ')
-        df = pre_process(pd.DataFrame([text], dtype=str, columns=['Text']))
-
-        test = TopicPredictor().predict_topic(df)
+        predict([text])
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')
