@@ -23,4 +23,4 @@ class TopicModel:
 
     def save_model(self):
         joblib.dump(self.nmf, f'{config.ROOT_DIR}\\models\\nmf.joblib')
-        joblib.dump(self.vector, f'{config.ROOT_DIR}\\models\\vectorizer.joblib')
+        joblib.dump(self.vector, f'{config.ROOT_DIR}\\models\\vector.joblib')

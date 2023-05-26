@@ -8,6 +8,7 @@ from pick import pick
 
 import config
 from Model import TopicModel
+from Predictor import TopicPredictor
 from Preprocessor import Preprocessor
 
 
@@ -53,19 +54,24 @@ if __name__ == '__main__':
     print(f'Okay, starting {option} with debug {"on" if config.DEBUG else "off"}...')
 
     start_time = time.time()
-    nrows = 1000 if config.DEBUG else None
-    df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
 
     # Preprocess the data
     if index == 0:
+        nrows = 1000 if config.DEBUG else None
+        df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
         df = pre_process(df)
 
     # Model the data
     if index == 1:
+        nrows = 1000 if config.DEBUG else None
+        df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
         train_model(df)
 
     # Predict new data
     if index == 2:
-        pass
+        text = input('What text do you want to check? ')
+        df = pre_process(pd.DataFrame([text], dtype=str, columns=['Text']))
+
+        test = TopicPredictor().predict_topic(df)
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')
