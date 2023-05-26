@@ -30,8 +30,8 @@ Using this (short) list of requirements a list of pages was made up:
 * Dashboard home screen
 * Settings Screen
   * Should allow to edit topics
-  * Create new accounts (**not implemented for this case**)
-  * Upload new dataset to retrain the model (**not implemented for this case**)
+  * ~~Create new accounts~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
+  * ~~Upload new dataset to retrain the model~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
 
 ### Login Page
 As mentioned previously the admin should be able to securely access the information they require in order to provide the right type of support. This is why a login page was designed, which should allow everything to be handled securely.
