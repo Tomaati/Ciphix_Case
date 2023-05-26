@@ -8,6 +8,7 @@ from pick import pick
 
 import config
 from Model import TopicModel
+from Predictor import TopicPredictor
 from Preprocessor import Preprocessor
 
 
@@ -45,6 +46,17 @@ def train_model(data):
         modeller.save_model()
 
 
+def predict(text_list):
+    """
+    This method predicts the topics of new conversations.
+    :param text_list: The data to process.
+    """
+    data = pre_process(pd.DataFrame(text_list, dtype=str, columns=['Text']))
+
+    test = TopicPredictor().predict_topic(data)
+    print(test)
+
+
 if __name__ == '__main__':
     title = 'Please choose what you want to do:'
     options = ['Only Pre-Process', 'Pre-Process and Model', 'Classify Data']
@@ -53,19 +65,22 @@ if __name__ == '__main__':
     print(f'Okay, starting {option} with debug {"on" if config.DEBUG else "off"}...')
 
     start_time = time.time()
-    nrows = 1000 if config.DEBUG else None
-    df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
 
     # Preprocess the data
     if index == 0:
+        nrows = 1000 if config.DEBUG else None
+        df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
         df = pre_process(df)
 
     # Model the data
     if index == 1:
+        nrows = 1000 if config.DEBUG else None
+        df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
         train_model(df)
 
     # Predict new data
     if index == 2:
-        pass
+        text = input('What text do you want to check? ')
+        predict([text])
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')

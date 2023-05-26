@@ -1,6 +1,14 @@
 # Readme
 
+---
+
+## Front-End
+
+---
+
 ## Exploratory Data Analysis
+
+---
 From Exploratory Data Analysis it became clear that:
 * `df.head()`, `df.tail()`, and `df.sample()` shows that the items represented in the dataset are tweets sent between customers and a company's support team.
 * There are `29156` duplicate tweets according to `df.duplicated().sum()`
@@ -10,9 +18,9 @@ From Exploratory Data Analysis it became clear that:
 * Some messages are in different languages, since NLP is best when looking at english text the different languages can
   be removed.
 
-## Front-End
-
 ## Back-End
+
+---
 In order for the Front-End to properly work it is important to have a fast and responsive Back-End. This Back-End is used for both training and classification purposes. But since the Front-End focuses on classification, the training has been done beforehand.
 ### Important Steps for Pre-Processing
 After the quick round of EDA it is important to look at the data and see what can be removed and/or adapted in order to
@@ -31,8 +39,7 @@ and resulted in a good enough baseline to continue with.
 #### Methods for Speeding up the Pre-Processing
 * Filter Optimization
     * Using Regex to filter before trying to run Spacy to lemmatize/filter
-* Minimize the use of apply
-* ...
+* Minimize the use of apply (this is often slower than a for loop)
 
 ### Important Steps for Creating Model
 For creating a model it is very important to understand the various different models that could be used for topic classification.
@@ -56,5 +63,14 @@ After creating the model it is important to also save it, so it can be re-used l
 * Hyperparameter Tuning
 
 ### Important Steps for New Conversation Classification
+For predicting topics of new conversations it is important to work with the previously created models. In order to do this the following steps were taken to predict the topics:
+* Load the `joblib` files in order to create the `CountVectorizer` and `NMF` models.
+* Initialize the topic keywords, by finding the most important feature names using the `Vectorizer` and `NMF`.
+* To predict the eventual topic the following steps were needed:
+  * Pre-Process the input
+  * Transform the input using the `CountVectorizer` and `NMF`, this gives the eventual weights of each topic in relation to the conversation.
+  * Find the topic with the highest weight, this will be the most likely topic of the conversation.
 
 #### Methods for Speeding up the Model Creation
+* Use as little loops as possible
+* Use quick calculations
