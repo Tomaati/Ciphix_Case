@@ -1,14 +1,75 @@
 # Readme
 
----
+<!-- TOC -->
+* [Front-End](#front-end)
+  * [Login Page](#login-page)
+  * [Admin Dashboard](#admin-dashboard)
+  * [Settings](#settings)
+* [Exploratory Data Analysis](#exploratory-data-analysis)
+* [Back-End](#back-end)
+  * [Important Steps for Pre-Processing](#important-steps-for-pre-processing)
+    * [Methods for Speeding up the Pre-Processing](#methods-for-speeding-up-the-pre-processing)
+  * [Important Steps for Creating Model](#important-steps-for-creating-model)
+    * [Methods for Speeding up the Model Creation](#methods-for-speeding-up-the-model-creation)
+  * [Important Steps for New Conversation Classification](#important-steps-for-new-conversation-classification)
+    * [Methods for Speeding up the Model Creation](#methods-for-speeding-up-the-model-creation-1)
+<!-- TOC -->
 
 ## Front-End
+Before I started working on the implementation of the Fron-End I planned the entire webapp on paper and Figma.
 
----
+I created a list of requirements on paper:
+* The webapp should have the admins login in order to use the service.
+* After login the Admin should be shown various information on the models and topics.
+* It should be clear without explanation how to (bulk) import new conversations.
+* The admin should be able to change the summarised topic names (this might be useful for readability but requires some human work/research).
+* The admin should be able to quickly see all different types of information in a clean and organized manner.
+
+Using this (short) list of requirements a list of pages was made up:
+* Login Page
+* Dashboard home screen
+* Settings Screen
+  * Should allow to edit topics
+  * Create new accounts (**not implemented for this case**)
+  * Upload new dataset to retrain the model (**not implemented for this case**)
+
+### Login Page
+As mentioned previously the admin should be able to securely access the information they require in order to provide the right type of support. This is why a login page was designed, which should allow everything to be handled securely.
+
+#### Design
+For the design it was kept in mind that the eventual page should contain only the necessary information, such as a login form. A stock image was pulled from the internet and added to the design in order to give it a more modern look.
+![login_figma.png](images/login_figma.png)
+
+#### Implementation
+The implementation for this page is quite simple, since I do not take a highly secure database for login as an important aspect for this case. This is why this implementation uses a simple login implementation, which will have to be improved when used in real life scenarios. This is also the reason why the `Forgot Password?` button is not working.
+
+### Admin Dashboard
+On the admin dashboard the admin should be able to have a quick overview of various pieces of information relevant to the topics of the support questions. For this example I've decided on using the following variables to fill the dashboard:
+* Quick overview area - *These are mostly interesting facts about the data on the dashboard* 
+  * Total Topics
+  * Total Conversations
+  * Total Training Size
+* ~~Deep Information area - *This is a table with all conversations added by the admin with their topics*~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
+* (Bulk) adding Conversations - *This should be a button that opens a form to upload more data to be processed*
+  * For this it is important to add a notice of progress, so the admin does not think the program got stuck
+
+#### Design
+This design also was kept to a minimal, it contains only the relevant information and nothing else, because of this it is very easy for the admins to understand, the graph can be used to see what topics are relevant, and the admin is able to either manually copy and paste conversations, or upload a csv to add conversations in bulk.
+![img.png](images/Dashboard_figma.png)
+
+#### Implementation
+The implementation for this is relatively simple, the graph shows an image of `matplotlib` plots. And the new conversation adder links directly to the backend.
+
+The text based adding is directly added into the backend, while the bulk csv uploading requires the csv file to be parsed before it can be used.
+
+### Settings
+For an admin it is important to have access to some more information on what is shown. Using this setting screen the admin should be able to add new user accounts, change the topics, and retrain the data.
+
+#### Design
+The design is an example of the `settings` screen, this screen is not implemented due to time constraints, but should give an idea of what settings would be nice to have.
+![img.png](images/Settings_figma.png)
 
 ## Exploratory Data Analysis
-
----
 From Exploratory Data Analysis it became clear that:
 * `df.head()`, `df.tail()`, and `df.sample()` shows that the items represented in the dataset are tweets sent between customers and a company's support team.
 * There are `29156` duplicate tweets according to `df.duplicated().sum()`
@@ -19,12 +80,10 @@ From Exploratory Data Analysis it became clear that:
   be removed.
 
 ## Back-End
-
----
 In order for the Front-End to properly work it is important to have a fast and responsive Back-End. This Back-End is used for both training and classification purposes. But since the Front-End focuses on classification, the training has been done beforehand.
 ### Important Steps for Pre-Processing
 After the quick round of EDA it is important to look at the data and see what can be removed and/or adapted in order to
-have clean data to work with. From EDA it became clear that the following had to be done in order to clean the data for
+have clean data to work with. From EDA, it became clear that the following had to be done in order to clean the data for
 the NLP and ML pipeline to work efficiently.
 
 * Look at all the different user tags, and decide which are companies and which are users. For this example it is
