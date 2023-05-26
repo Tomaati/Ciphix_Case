@@ -3,7 +3,7 @@ This module allows for the modeling of the data, which can later be used for pre
 """
 import joblib
 from sklearn.decomposition import NMF
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 import config
 

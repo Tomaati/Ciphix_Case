@@ -4,11 +4,11 @@ This module contains the main functions used to find the relevant topics from cu
 import time
 
 import pandas as pd
+from pick import pick
 
 import config
 from Model import TopicModel
 from Preprocessor import Preprocessor
-from pick import pick
 
 
 def pre_process(data):
