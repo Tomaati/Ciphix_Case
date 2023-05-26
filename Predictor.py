@@ -2,8 +2,6 @@
 This module contains the predictor class, which can predict the topic of new conversations using the models created
 in model.py
 """
-import time
-
 import joblib
 import numpy as np
 
@@ -17,15 +15,12 @@ class TopicPredictor:
     """
 
     def __init__(self, topic_count=10):
-        start_time = time.time()
         self.topic_count = topic_count
         self.nmf = joblib.load(f'{config.ROOT_DIR}\\models\\nmf.joblib')
         self.vector = joblib.load(f'{config.ROOT_DIR}\\models\\vector.joblib')
 
         self.topics = []
         self.init_topics()
-
-        print(f'Predictor Created, it took {time.time() - start_time} seconds to create.')
 
     def init_topics(self):
         for topic in self.nmf.components_:

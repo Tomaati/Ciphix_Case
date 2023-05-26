@@ -87,7 +87,6 @@ def clean_text(text):
     text = emoji_pattern.sub(r'', text)
 
     # Now we want to remove all the other unnecessary characters within the text.
-    # Note, this also remove all emojis.
     text = re.findall(r'[^\W\d]+', text)
 
     return ' '.join(text)
