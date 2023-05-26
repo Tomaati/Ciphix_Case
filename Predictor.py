@@ -23,8 +23,8 @@ class TopicPredictor:
         self.vector = joblib.load(f'{config.ROOT_DIR}\\models\\vector.joblib')
 
         self.topics = []
-
         self.init_topics()
+
         print(f'Predictor Created, it took {time.time() - start_time} seconds to create.')
 
     def init_topics(self):
@@ -41,7 +41,7 @@ class TopicPredictor:
         vector = self.vector.transform(data['Preprocessed'])
         nmf = self.nmf.transform(vector)
 
-        predict_topic = np.argmax(nmf[0])
-        topic = self.topics[predict_topic]
+        predict_topics = [np.argmax(x) for x in nmf]
+        topics = [self.topics[x] for x in predict_topics]
 
-        return topic
+        return topics
