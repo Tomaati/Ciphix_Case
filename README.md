@@ -1,19 +1,14 @@
 # Readme
 
-<!-- TOC -->
 * [Front-End](#front-end)
   * [Login Page](#login-page)
   * [Admin Dashboard](#admin-dashboard)
   * [Settings](#settings)
 * [Exploratory Data Analysis](#exploratory-data-analysis)
 * [Back-End](#back-end)
-  * [Important Steps for Pre-Processing](#important-steps-for-pre-processing)
-    * [Methods for Speeding up the Pre-Processing](#methods-for-speeding-up-the-pre-processing)
-  * [Important Steps for Creating Model](#important-steps-for-creating-model)
-    * [Methods for Speeding up the Model Creation](#methods-for-speeding-up-the-model-creation)
-  * [Important Steps for New Conversation Classification](#important-steps-for-new-conversation-classification)
-    * [Methods for Speeding up the Model Creation](#methods-for-speeding-up-the-model-creation-1)
-<!-- TOC -->
+  * [Pre-Processing](#important-steps-for-pre-processing)
+  * [Creating Model](#important-steps-for-creating-model)
+  * [New Conversation Classification](#important-steps-for-new-conversation-classification)
 
 ## Front-End
 Before I started working on the implementation of the Fron-End I planned the entire webapp on paper and Figma.
@@ -28,6 +23,9 @@ I created a list of requirements on paper:
 Using this (short) list of requirements a list of pages was made up:
 * Login Page
 * Dashboard home screen
+  * Show overview of information in a graph
+  * Show detailed information in a table
+  * Allow admins to upload new conversations
 * Settings Screen
   * Should allow to edit topics
   * ~~Create new accounts~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
@@ -45,10 +43,9 @@ The implementation for this page is quite simple, since I do not take a highly s
 
 ### Admin Dashboard
 On the admin dashboard the admin should be able to have a quick overview of various pieces of information relevant to the topics of the support questions. For this example I've decided on using the following variables to fill the dashboard:
-* Quick overview area - *These are mostly interesting facts about the data on the dashboard* 
+* Quick overview area - *These are mostly interesting facts about the data on the dashboard (Note, this is just an example)* 
   * Total Topics
   * Total Conversations
-  * Total Training Size
 * Deep Information area - *This is a table with all conversations added by the admin with their topics*
 * (Bulk) adding Conversations - *This should be a button that opens a form to upload more data to be processed*
   * For this it is important to add a notice of progress, so the admin does not think the program got stuck

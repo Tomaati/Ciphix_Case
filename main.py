@@ -18,8 +18,10 @@ def pre_process(data):
     :param data: The data to process.
     :return: The processed data.
     """
-    data = data['Text'].str.extract(r'@([^ ]+)(.*)')
-    data = pd.DataFrame(list(zip(data[0], data[1])), columns=['Tag', 'Text']).dropna(subset='Text')
+    twitter_handles = data['Text'].str.extract(r'@(\S+)')[0].values
+    tweets = data['Text'].str.replace(r'(@\S+)', '', regex=True).values
+
+    data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
 
     # Remove useless punctuation from the username
     data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     if index == 0:
         nrows = 1000 if config.DEBUG else None
         df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'], nrows=nrows)
-        df = pre_process(df)
+        pre_process(df)
 
     # Model the data
     if index == 1:

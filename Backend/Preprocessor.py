@@ -5,7 +5,7 @@ import re
 
 import spacy
 
-at_pattern = '@([^ ]+)'
+at_pattern = '@(\S+)'
 tag_pattern = '[\^\-\*][A-Z\d]+$'
 url_pattern = 'https?://\S+|www\.\S+'
 newline_pattern = '\n'
@@ -41,10 +41,6 @@ class Preprocessor:
         self.clean_df()
 
     def clean_df(self):
-        self.data['Clean'] = self.data['Text'].apply(clean_text)
-
-        print('Done Cleaning')
-
         # Check if a username is related to a company or a customer, only keep customers.
         self.data['Is_Employee'] = self.data['Tag'].str.isnumeric()
         self.data = self.data[~self.data['Is_Employee']]
@@ -53,9 +49,14 @@ class Preprocessor:
 
         # Count the words, and only keep relevant text by removing short tweets.
         min_count = 3
-        self.data = self.data[self.data['Clean'].str.split(' ').str.len() > min_count]
+        self.data = self.data[self.data['Text'].str.split(' ').str.len() > min_count]
 
         print('Done Checking Word Count')
+
+        # Clean the remaining data using various regex patterns
+        self.data['Clean'] = self.data['Text'].apply(clean_text)
+
+        print('Done Cleaning')
 
         # Pre-process the data using Spacy
         self.data['Preprocessed'] = self.preprocess(self.data['Clean'])
