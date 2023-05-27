@@ -28,8 +28,8 @@ Using this (short) list of requirements a list of pages was made up and a tree d
   * Allow admins to upload new conversations
 * Settings Screen
   * Should allow to edit topics
-  * ~~Create new accounts~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
-  * ~~Upload new dataset to retrain the model~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
+  * ~~Create new accounts~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more time than allotted to this case.*
+  * ~~Upload new dataset to retrain the model~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more time than allotted to this case.*
   
 ![design_paper.png](images/design_paper.jpg)
 
@@ -57,9 +57,7 @@ This design also was kept to a minimal, it contains only the relevant informatio
 ![img.png](images/dashboard_figma.png)
 
 #### Implementation
-The implementation for this is relatively simple, the graph shows an image of `matplotlib` plots. And the new conversation adder links directly to the backend.
-
-The text based adding is directly added into the backend, while the bulk csv uploading requires the csv file to be parsed before it can be used.
+The implementation for this is relatively simple, the graph shows an image of `matplotlib` plots. And the new conversation adder links directly to the backend. The text based adding is directly added into the backend, while the bulk csv uploading requires the csv file to be parsed before it can be used.
 
 ### Settings
 For an admin it is important to have access to some more information on what is shown. Using this setting screen the admin should be able to add new user accounts, change the topics, and retrain the data.
@@ -126,7 +124,7 @@ After this we have to decide on what type of model to use for this case, various
 
 According to this paper it is best to use `NMF`, since both `BERTopic` and `Top2Vec` require prior knowledge of the dataset ((semi-)supervised learning) and `LDA` performed worse than `NMF` on short tweets and requires a lot of hyperparameter tuning in order to work optimally.
 
-After creating the model it is important to also save it, so it can be re-used later on for determining the topics of new conversations, in order to do this the `joblib` package was used, since it is advised to used by the `scikit-learn` documentation because the other widely used package `pickle` often is slower for very large arrays.
+After creating the model it is important to also save it, so it can be re-used later on for determining the topics of new conversations, in order to do this the `joblib` package was used, since it is advised to used by the `scikit-learn` documentation, the other widely used package, `pickle`, often is slower for very large arrays.
 
 #### Methods for Speeding up the Model Creation
 * Hyperparameter Tuning
