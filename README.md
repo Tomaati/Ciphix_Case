@@ -20,7 +20,7 @@ I created a list of requirements on paper:
 * The admin should be able to change the summarised topic names (this might be useful for readability but requires some human work/research).
 * The admin should be able to quickly see all different types of information in a clean and organized manner.
 
-Using this (short) list of requirements a list of pages was made up:
+Using this (short) list of requirements a list of pages was made up and a tree diagram was created on paper:
 * Login Page
 * Dashboard home screen
   * Show overview of information in a graph
@@ -30,6 +30,8 @@ Using this (short) list of requirements a list of pages was made up:
   * Should allow to edit topics
   * ~~Create new accounts~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
   * ~~Upload new dataset to retrain the model~~ *This is scrapped because the design would look very cluttered, and goes outside the scope of the case. As well as requiring a lot more time than allotted to this case.*
+  
+![design_paper.png](images/design_paper.jpg)
 
 ### Login Page
 As mentioned previously the admin should be able to securely access the information they require in order to provide the right type of support. This is why a login page was designed, which should allow everything to be handled securely.
