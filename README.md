@@ -76,6 +76,14 @@ Since Django is a new framework for me, I've implemented the design using the fo
   * Implement editing data from `sqlite`
 * Design the pages by creating CSS based on the `Figma` designs mentioned above.
 
+### Database Design
+In order to store all the information that is needed to get the web application up and running it is important to design what the database(s) will look like. The following information has to be stored somewhere in order for it to be re-used on the web application:
+* Username / Password
+* Conversations / Topics
+* Topics / Summary - *Note, this is mainly useful for the readability of the application*
+
+As mentioned previously the databases will be stored using `sqlite`, because it is a relatively lightweight db that is supported by `django` and allows for quick and easy access/manipulation.
+
 ## Exploratory Data Analysis
 From Exploratory Data Analysis it became clear that:
 * `df.head()`, `df.tail()`, and `df.sample()` shows that the items represented in the dataset are tweets sent between customers and a company's support team.
