@@ -29,11 +29,7 @@ def pre_process(data):
     # Remove all duplicate rows to speed up all further calculations
     data.drop_duplicates()
 
-    preprocessor = Preprocessor(data)
-
-    print(preprocessor.data['Preprocessed'])
-
-    return preprocessor.data
+    return Preprocessor(data).data
 
 
 def train_model(data):
