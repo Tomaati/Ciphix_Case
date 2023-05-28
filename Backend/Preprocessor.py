@@ -63,7 +63,7 @@ class Preprocessor:
         return data
 
     def preprocess(self, text):
-        docs = self.model.pipe(text, n_process=10)
+        docs = self.model.pipe(text, n_process=2)
         output = []
 
         for doc in docs:

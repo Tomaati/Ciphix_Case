@@ -52,12 +52,12 @@ def predict(text):
     This method predicts the topics of new conversations.
     :param text: The data to process.
     """
-    return TopicPredictor().predict_topic(pre_process(text))
+    return text, TopicPredictor().predict_topic(pre_process(text))
 
 
 def predict_list(text_list):
     processed = [clean_text(text) for text in text_list]
-    return TopicPredictor().predict_list_topic(Preprocessor().preprocess(processed))
+    return text_list, TopicPredictor().predict_list_topic(Preprocessor().preprocess(processed))
 
 
 if __name__ == '__main__':

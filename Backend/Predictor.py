@@ -41,7 +41,7 @@ class TopicPredictor:
 
         topic = np.argmax(nmf)
 
-        return data[0], topic
+        return topic
 
     def predict_list_topic(self, data):
         return [self.predict_topic(x) for x in data]
