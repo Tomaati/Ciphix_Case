@@ -63,7 +63,7 @@ The implementation for this is relatively simple, the graph shows an image of `m
 For an admin it is important to have access to some more information on what is shown. Using this setting screen the admin should be able to add new user accounts, change the topics, and retrain the data.
 
 #### Design
-The design is an example of the `settings` screen, this screen is not implemented due to time constraints, but should give an idea of what settings would be nice to have.
+The design is an example of the `settings` screen. It will allow the admin to change the summaries for each topic, so they are better to understand.
 ![img.png](images/Settings_figma.png)
 
 ### General Implementation Strategy

@@ -24,6 +24,7 @@ from settings_app import views as settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login.signin, name='login'),
+    path('logout/', login.signout, name='logout'),
     path('dashboard/', dashboard.summarizing_table_graph, name='dashboard'),
     path('settings/', settings.topic_summary_table, name='settings')
 ]

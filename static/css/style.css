@@ -84,8 +84,6 @@ body {
 }
 
 p,
-li,
-ul,
 pre,
 div,
 h1,
@@ -200,3 +198,41 @@ body {
 #table tr:nth-child(even){background-color: #f2f2f2;}
 
 #table tr:hover {background-color: #ddd;}
+
+/*Navigation Styles*/
+ul {
+  font-family: Poppins, serif;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--dl-color-blue);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li strong {
+  display: block;
+  color: white;
+  background-color: darkblue;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: blue;
+}
