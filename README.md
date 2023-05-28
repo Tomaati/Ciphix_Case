@@ -77,6 +77,8 @@ Since Django is a new framework for me, I've implemented the design using the fo
 * Design the pages by creating CSS based on the `Figma` designs mentioned above.
   * _Note, these designs are a little more simple in the eventual web application due to time constraints._
 
+Each page was first written in plain HTML, after that was all working perfectly, the CSS code was written using both Bootstrap and Custom CSS to create the look and feel of the application.
+
 ### Database Design
 In order to store all the information that is needed to get the web application up and running it is important to design what the database(s) will look like. The following information has to be stored somewhere in order for it to be re-used on the web application:
 * Username / Password

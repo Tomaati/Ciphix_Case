@@ -19,9 +19,11 @@ from django.urls import path
 
 from dashboard_app import views as dashboard
 from login_app import views as login
+from settings_app import views as settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login.signin, name='login'),
-    path('dashboard/', dashboard.summarizing_table_graph, name='dashboard')
+    path('dashboard/', dashboard.summarizing_table_graph, name='dashboard'),
+    path('settings/', settings.topic_summary_table, name='settings')
 ]
