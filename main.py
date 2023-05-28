@@ -18,13 +18,13 @@ def pre_process(data):
     :param data: The data to process.
     :return: The processed data.
     """
-    twitter_handles = data['Text'].str.extract(r'@(\S+)')[0].values
-    tweets = data['Text'].str.replace(r'(@\S+)', '', regex=True).values
-
-    data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
-
-    # Remove useless punctuation from the username
-    data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
+    # twitter_handles = data['Text'].str.extract(r'@(\S+)')[0].values
+    # tweets = data['Text'].str.replace(r'(@\S+)', '', regex=True).values
+    #
+    # data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
+    #
+    # # Remove useless punctuation from the username
+    # data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
 
     # Remove all duplicate rows to speed up all further calculations
     data.drop_duplicates()
@@ -37,7 +37,6 @@ def train_model(data):
     This method trains a model for predicting the top 10 topics from the dataset.
     :param data: The data to process.
     """
-    data = pre_process(data)
     modeller = TopicModel(data)
     # Save the model
     if not config.DEBUG:
@@ -49,9 +48,7 @@ def predict(text_list):
     This method predicts the topics of new conversations.
     :param text_list: The data to process.
     """
-    data = pre_process(pd.DataFrame(text_list, dtype=str, columns=['Text']))
-
-    test = TopicPredictor().predict_topic(data)
+    test = TopicPredictor().predict_topic(text_list)
     print(test)
 
 

@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from dashboard_app import views as dashboard
+from login_app import views as login
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', login.signin, name='login')
 ]

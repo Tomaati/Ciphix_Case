@@ -75,6 +75,7 @@ Since Django is a new framework for me, I've implemented the design using the fo
   * Implement uploading new data to `sqlite`
   * Implement editing data from `sqlite`
 * Design the pages by creating CSS based on the `Figma` designs mentioned above.
+  * _Note, these designs are a little more simple in the eventual web application due to time constraints._
 
 ### Database Design
 In order to store all the information that is needed to get the web application up and running it is important to design what the database(s) will look like. The following information has to be stored somewhere in order for it to be re-used on the web application:
@@ -108,8 +109,7 @@ the NLP and ML pipeline to work efficiently.
 * Remove all 'useless' characters using the `DataCleaner.py` script.
 * Remove all duplicate tweets.
 
-For this preprocessing step regex was used, since it turned out to be way quicker than cleaning with SpaCy, # How much?,
-and resulted in a good enough baseline to continue with.
+For this preprocessing step regex was used, since it turned out to be way quicker than cleaning with SpaCy, and resulted in a good enough baseline to continue with.
 
 #### Methods for Speeding up the Pre-Processing
 * Filter Optimization

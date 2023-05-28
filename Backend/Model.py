@@ -6,6 +6,7 @@ from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import CountVectorizer
 
 import config
+from Backend.Preprocessor import Preprocessor
 
 
 class TopicModel:
@@ -13,7 +14,7 @@ class TopicModel:
     This class creates a Model based on the data provided by Ciphix.
     """
     def __init__(self, df, topic_count=10):
-        self.df = df
+        self.df = Preprocessor(df).data
         self.topic_count = topic_count
         self.nmf = NMF(n_components=self.topic_count)
         self.vector = CountVectorizer(min_df=5, max_df=0.9, stop_words='english')
