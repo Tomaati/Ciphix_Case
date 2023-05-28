@@ -59,7 +59,7 @@
                 </thead>
                 {% for k in data %}
                     <tr>
-                        <td>{{ k.topic_keywords }}</td>
+                        <td>{{ k.topic_id__topic_summary }}</td>
                         <td>{{ k.total }}</td>
                     </tr>
 
@@ -81,7 +81,7 @@
                 {% for k in full %}
                     <tr>
                         <td>{{ k.conversation }}</td>
-                        <td>{{ k.topic_keywords }}</td>
+                        <td>{{ k.topic_id.topic_summary }}</td>
                     </tr>
                 {% endfor %}
             </table>
