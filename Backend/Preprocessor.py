@@ -34,43 +34,41 @@ class Preprocessor:
     This class prepares the data for the Machine Learning algorithms that can be used to determine the top 10 topics.
     """
 
-    def __init__(self, df):
+    def __init__(self):
         self.model = spacy.load('en_core_web_sm')
-        self.data = df
 
-        self.clean_df()
-
-    def clean_df(self):
+    def clean_df(self, data):
         # Check if a username is related to a company or a customer, only keep customers.
-        self.data['Is_Employee'] = self.data['Tag'].str.isnumeric()
-        self.data = self.data[~self.data['Is_Employee']]
+        data['Is_Employee'] = data['Tag'].str.isnumeric()
+        data = data[~data['Is_Employee']]
 
         print('Done Checking Employees')
 
         # Count the words, and only keep relevant text by removing short tweets.
         min_count = 3
-        self.data = self.data[self.data['Text'].str.split(' ').str.len() > min_count]
+        data = data[data['Text'].str.split(' ').str.len() > min_count]
 
         print('Done Checking Word Count')
 
         # Clean the remaining data using various regex patterns
-        self.data['Clean'] = self.data['Text'].apply(clean_text)
+        data['Clean'] = data['Text'].apply(clean_text)
 
         print('Done Cleaning')
 
         # Pre-process the data using Spacy
-        self.data['Preprocessed'] = self.preprocess(self.data['Clean'])
+        data['Preprocessed'] = self.preprocess(data['Clean'])
 
         print('Done Preprocessing the data')
+
+        return data
 
     def preprocess(self, text):
         docs = self.model.pipe(text, n_process=10)
         output = []
 
         for doc in docs:
-            lemma = " ".join(
-                token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
-                                                          and token not in self.model.Defaults.stop_words))
+            lemma = " ".join(token.lemma_.strip() for token in doc if (token.pos_ in ['PROPN', 'NOUN', 'VERB']
+                                                                       and token not in self.model.Defaults.stop_words))
             output.append(lemma.lower())
         return output
 

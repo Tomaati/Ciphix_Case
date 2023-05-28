@@ -22,5 +22,6 @@ from login_app import views as login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login.signin, name='login')
+    path('', login.signin, name='login'),
+    path('dashboard/', dashboard.summarizing_table_graph, name='dashboard')
 ]

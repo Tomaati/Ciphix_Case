@@ -9,27 +9,27 @@ from pick import pick
 import config
 from Backend.Model import TopicModel
 from Backend.Predictor import TopicPredictor
-from Backend.Preprocessor import Preprocessor
+from Backend.Preprocessor import Preprocessor, clean_text
 
 
-def pre_process(data):
+def pre_process_df(data):
     """
     This method prepares the data for training and modeling.
     :param data: The data to process.
     :return: The processed data.
     """
-    # twitter_handles = data['Text'].str.extract(r'@(\S+)')[0].values
-    # tweets = data['Text'].str.replace(r'(@\S+)', '', regex=True).values
-    #
-    # data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
-    #
-    # # Remove useless punctuation from the username
-    # data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
+    twitter_handles = data['Text'].str.extract(r'@(\S+)')[0].values
+    tweets = data['Text'].str.replace(r'(@\S+)', '', regex=True).values
+
+    data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
+
+    # Remove useless punctuation from the username
+    data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
 
     # Remove all duplicate rows to speed up all further calculations
     data.drop_duplicates()
 
-    return Preprocessor(data).data
+    return Preprocessor().clean_df(data)
 
 
 def train_model(data):
@@ -43,13 +43,21 @@ def train_model(data):
         modeller.save_model()
 
 
-def predict(text_list):
+def pre_process(text):
+    return Preprocessor().preprocess([clean_text(text)])
+
+
+def predict(text):
     """
     This method predicts the topics of new conversations.
-    :param text_list: The data to process.
+    :param text: The data to process.
     """
-    test = TopicPredictor().predict_topic(text_list)
-    print(test)
+    return TopicPredictor().predict_topic(pre_process(text))
+
+
+def predict_list(text_list):
+    processed = [clean_text(text) for text in text_list]
+    return TopicPredictor().predict_list_topic(Preprocessor().preprocess(processed))
 
 
 if __name__ == '__main__':
@@ -76,6 +84,6 @@ if __name__ == '__main__':
     # Predict new data
     if index == 2:
         text = input('What text do you want to check? ')
-        predict([text])
+        predict(text)
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')

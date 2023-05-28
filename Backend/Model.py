@@ -14,7 +14,7 @@ class TopicModel:
     This class creates a Model based on the data provided by Ciphix.
     """
     def __init__(self, df, topic_count=10):
-        self.df = Preprocessor(df).data
+        self.df = Preprocessor().clean_df(df)
         self.topic_count = topic_count
         self.nmf = NMF(n_components=self.topic_count)
         self.vector = CountVectorizer(min_df=5, max_df=0.9, stop_words='english')

@@ -1,5 +1,6 @@
 <!-- At the top of your page add load static -->
 {% load static %}
+{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +72,7 @@
         </div>
     </div>
     <div class="row mx-2">
-        <div class="col m-2 foreground-widget">
+        <div class="col m-2 foreground-widget" style="min-height: 200px">
             <br>
             <table id="table">
                 <thead>
@@ -89,17 +90,17 @@
         </div>
     </div>
     <div class="row mx-2">
-        <div class="col-sm-9 m-2 foreground-widget">
+        <div class="col-sm-8 m-2 foreground-widget">
             <div class="title-text pt-4">Upload Single Conversation</div>
             <div class="title-subtext">Please enter one full conversation, if you want to enter multiple split them
                 using an enter.
             </div>
             <br>
-            <form method="post">
+            <form method="post" action="{% url 'dashboard' %}">
                 {% csrf_token %}
-                <textarea class="form-control big-input" rows="10" name="Text1"></textarea>
+                <textarea class="form-control big-input" rows="10" name="conversation" required></textarea>
                 <br>
-                <button type="submit" class="button">Upload</button>
+                <input type="submit" class="button" value="Upload">
             </form>
             <br>
         </div>
@@ -107,9 +108,12 @@
             <div class="title-text pt-4">Upload Bulk</div>
             <div class="title-subtext">Upload a CSV file where every conversation is split by an enter.</div>
             <br>
-            <form method="POST" class="post-form" enctype="multipart/form-data">
+            <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'dashboard' %}" name="csv">
                 {% csrf_token %}
                 {{ form.as_p }}
+                <br>
+                <br>
+                <br>
                 <button type="submit" class="button">Upload</button>
             </form>
             <br>
@@ -122,7 +126,7 @@
     var myChart1 = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [{% for x in data %} '{{ x.topic_keywords }}', {% endfor %}],
+            labels: [{% for x in data %} '{{ x.topic_id__topic_summary }}', {% endfor %}],
             datasets: [{
                 label: 'Count',
                 data: [{% for x in data %} '{{ x.total }}', {% endfor %}],
@@ -139,7 +143,11 @@
             },
             scales: {
                 yAxes: [{
-                    barPercentage: 0.4
+                    barPercentage: 0.4,
+                    display: true,
+                    gridLines: {
+                        display: false
+                    }
                 }]
             },
             plugins: {
