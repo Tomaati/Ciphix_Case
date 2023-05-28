@@ -4,8 +4,10 @@ in model.py
 """
 import joblib
 import numpy as np
+import pandas as pd
 
 import config
+from Backend.Preprocessor import Preprocessor
 
 
 class TopicPredictor:
@@ -33,10 +35,13 @@ class TopicPredictor:
             self.topics.append(' '.join(important_features))
 
     def predict_topic(self, data):
-        vector = self.vector.transform(data['Preprocessed'])
+        data = [x.strip() for x in data]
+        vector = self.vector.transform(data)
         nmf = self.nmf.transform(vector)
 
-        predict_topics = [np.argmax(x) for x in nmf]
-        topics = [self.topics[x] for x in predict_topics]
+        topic = np.argmax(nmf)
 
-        return topics
+        return topic
+
+    def predict_list_topic(self, data):
+        return [self.predict_topic(x) for x in data]

@@ -1,0 +1,156 @@
+<!-- At the top of your page add load static -->
+{% extends "header.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block nav-dash %}<strong>Dashboard</strong>{% endblock %}
+
+{% block main_content %}
+    <div class="container-fluid background">
+        <div class="row mx-2 mt-2 mb-2 justify-content-md-center">
+            <div class="col-sm-3 mx-2 mt-5 mb-2 foreground-widget">
+                <div class="row">
+                    <div class="col-sm-4 d-flex align-items-center justify-content-center">
+                    <img class="small_icon" src="{% static 'images/topics.png' %}" alt="image"/>
+                </div>
+                <div class="col-sm-8">
+                    <div class="title-text">Topics</div>
+                    <div class="title-subtext">10</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mx-2 mt-5 mb-2 foreground-widget">
+            <div class="row">
+                <div class="col-sm-4 d-flex align-items-center justify-content-center">
+                    <img class="small_icon" src="{% static 'images/conversations.png' %}" alt="image"/>
+                </div>
+                <div class="col-sm-8">
+                    <div class="title-text">Conversations</div>
+                    <div class="title-subtext">{{ full.count }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-sm m-2 foreground-widget">
+            <div class="title-text pt-4">Topic Overview</div>
+            <br>
+            <table id="table">
+                <thead>
+                <th>Topic</th>
+                <th>Count</th>
+                </thead>
+                {% for k in data %}
+                    <tr>
+                        <td>{{ k.topic_id__topic_summary }}</td>
+                        <td>{{ k.total }}</td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-sm-8 m-2 foreground-widget">
+            <canvas id="myChart1"></canvas>
+        </div>
+    </div>
+    <div class="row mx-2">
+        <div class="col m-2 foreground-widget" style="min-height: 200px">
+            <br>
+            <table id="table">
+                <thead>
+                <th>Conversation</th>
+                <th>Topic</th>
+                <th>Settings</th>
+                </thead>
+                {% for k in full %}
+                    <tr>
+                        <td>{{ k.conversation }}</td>
+                        <td>{{ k.topic_id.topic_summary }}</td>
+                        <td>
+                            <form method="post" action="{% url 'dashboard' %}">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{k.id}}" name="delete-id">
+                                <input type="Submit" class="button" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+        </div>
+    </div>
+    <div class="row mx-2">
+        <div class="col-sm-8 m-2 foreground-widget">
+            <div class="title-text pt-4">Upload Single Conversation</div>
+            <div class="title-subtext">Please enter one full conversation, if you want to enter multiple split them
+                using an enter.
+            </div>
+            <br>
+            <form method="post" action="{% url 'dashboard' %}">
+                {% csrf_token %}
+                <textarea class="form-control big-input" rows="10" name="conversation" required></textarea>
+                <br>
+                <input type="submit" class="button" value="Upload">
+            </form>
+            <br>
+        </div>
+        <div class="col-sm m-2 foreground-widget">
+            <div class="title-text pt-4">Upload Bulk</div>
+            <div class="title-subtext">Upload a CSV file where every conversation is split by an enter.</div>
+            <br>
+            <form method="POST" class="post-form" enctype="multipart/form-data" action="{% url 'dashboard' %}" name="csv">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <br>
+                <br>
+                <button type="submit" class="button">Upload</button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for x in data %} '{{ x.topic_id__topic_summary }}', {% endfor %}],
+            datasets: [{
+                label: 'Count',
+                data: [{% for x in data %} '{{ x.total }}', {% endfor %}],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            x: {
+                ticks: {
+                    stepSize: 1,
+                    autoSkip: false
+                }
+            },
+            scales: {
+                yAxes: [{
+                    barPercentage: 0.4,
+                    display: true,
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
+            }
+        }
+    })
+</script>
+
+{% endblock %}

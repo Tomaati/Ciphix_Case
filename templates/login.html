@@ -1,0 +1,47 @@
+{% load static %}
+{% load widget_tweaks %}
+<head>
+    <title>{% block title %}Ciphix Admin Panel{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900"
+          data-tag="font"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900"
+          data-tag="font"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+</head>
+{% block content %}
+
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    <div class="admin-login-background">
+        <div class="admin-login-foreground">
+            <img class="admin-login-image" src="{% static 'images/login-splash.png' %}" alt="image"/>
+            <div class="admin-login-form-container">
+                <span class="admin-login-title-text">Admin Login</span>
+                <span class="admin-login-title-subtext">Please login in order to view important topics<br>and request new ones.</span>
+                <br>
+                <br>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <label>{{ form.username.label_tag }}</label>
+                    <div>{{ form.username | add_class:"admin-login-input"}}</div>
+                    <br>
+                    <label>{{ form.password.label_tag }}</label>
+                    <div>{{ form.password | add_class:"admin-login-input"}}</div>
+                    <br>
+                    <br>
+                    <input type="submit" class="admin-login-button" value="login">
+                </form>
+            </div>
+        </div>
+        <span class="designer-tag"> Designed by: <br> Tom Saveur</span>
+    </div>
+
+{% endblock %}
