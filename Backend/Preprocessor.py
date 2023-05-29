@@ -38,6 +38,9 @@ class Preprocessor:
         self.model = spacy.load('en_core_web_sm')
 
     def clean_df(self, data):
+        # Remove all duplicate rows to speed up all further calculations
+        data = data.drop_duplicates()
+
         # Check if a username is related to a company or a customer, only keep customers.
         data['Is_Employee'] = data['Tag'].str.isnumeric()
         data = data[~data['Is_Employee']]

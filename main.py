@@ -26,9 +26,6 @@ def pre_process_df(data):
     # Remove useless punctuation from the username
     data['Tag'] = data['Tag'].str.replace(r'[^\w\s]', '', regex=True)
 
-    # Remove all duplicate rows to speed up all further calculations
-    data.drop_duplicates()
-
     return Preprocessor().clean_df(data)
 
 
@@ -62,7 +59,7 @@ def predict_list(text_list):
 
 if __name__ == '__main__':
     title = 'Please choose what you want to do:'
-    options = ['Only Pre-Process', 'Pre-Process and Model', 'Classify Data']
+    options = ['Only Pre-Process', 'Pre-Process and Model', 'Classify Data', 'Test Stuff']
     option, index = pick(options)
 
     print(f'Okay, starting {option} with debug {"on" if config.DEBUG else "off"}...')
@@ -85,5 +82,15 @@ if __name__ == '__main__':
     if index == 2:
         text = input('What text do you want to check? ')
         predict(text)
+
+    if index == 3:
+        df = pd.read_csv(f'{config.ROOT_DIR}\\data\\data.csv', header=None, names=['Text'])
+        twitter_handles = df['Text'].str.extract(r'@(\S+)')[0].values
+        tweets = df['Text'].str.replace(r'(@\S+)', '', regex=True).values
+
+        data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
+
+        min_count = 3
+        data = data[data['Text'].str.split(' ').str.len() > min_count]
 
     print(f'\nMy program took {time.time() - start_time} seconds to run.')

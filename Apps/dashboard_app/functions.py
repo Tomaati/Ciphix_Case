@@ -1,4 +1,4 @@
-from dashboard_app.models import Topic_Conversation
+from apps.dashboard_app.models import Topic_Conversation
 from main import predict_list, predict
 
 
