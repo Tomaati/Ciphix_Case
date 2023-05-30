@@ -1,5 +1,6 @@
-from apps.dashboard_app.models import Topic_Summary
 from django.shortcuts import render
+
+from Apps.dashboard_app.models import Topic_Summary
 
 
 # Create your views here.

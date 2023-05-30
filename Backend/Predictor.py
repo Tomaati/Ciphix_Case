@@ -19,8 +19,8 @@ class TopicPredictor:
 
     def __init__(self, topic_count=10):
         self.topic_count = topic_count
-        self.nmf = joblib.load(f'{config.ROOT_DIR}\\models\\nmf.joblib')
-        self.vector = joblib.load(f'{config.ROOT_DIR}\\models\\vector.joblib')
+        self.nmf = joblib.load(f'{config.ROOT_DIR}/models/nmf.joblib')
+        self.vector = joblib.load(f'{config.ROOT_DIR}/models/vector.joblib')
 
         self.topics = []
         self.init_topics()

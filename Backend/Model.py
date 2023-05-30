@@ -24,5 +24,5 @@ class TopicModel:
         self.data_nmf = self.nmf.fit_transform(self.data_vector)
 
     def save_model(self):
-        joblib.dump(self.nmf, f'{config.ROOT_DIR}\\models\\nmf.joblib')
-        joblib.dump(self.vector, f'{config.ROOT_DIR}\\models\\vector.joblib')
+        joblib.dump(self.nmf, f'{config.ROOT_DIR}/models/nmf.joblib')
+        joblib.dump(self.vector, f'{config.ROOT_DIR}/models/vector.joblib')
