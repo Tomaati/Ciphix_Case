@@ -28,8 +28,9 @@ The webapp can easily be deployed using [Docker](https://www.docker.com/), first
 After that do the following:
 ```powershell
 docker build -t ciphix-topic
-docker run 
+docker run -it -p 8000:8000 ciphix-topic
 ```
+After this the docker container should be running and visible when running `docker ps`. You can now visit `127.0.0.1:8000` and login using the information above.
 
 ## Exploratory Data Analysis
 
