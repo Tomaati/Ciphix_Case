@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from Apps.dashboard_app.apps import DashboardAppConfig
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,9 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7i-339woqfla$=_7y_th&$4+ez%l!p39s$^8-qih3utu7m+^ds'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  'localhost',
+  '127.0.0.1',
+  'predictor.hhhserver.online']
 
 # Application definition
 
@@ -36,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
-    'apps.dashboard_app.apps.DashboardAppConfig',
-    'apps.login_app.apps.LoginAppConfig'
+    'Apps.dashboard_app.apps.DashboardAppConfig',
+    'Apps.login_app.apps.LoginAppConfig',
+    'Apps.settings_app.apps.SettingsAppConfig'
 ]
 
 MIDDLEWARE = [
