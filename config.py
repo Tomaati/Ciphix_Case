@@ -4,4 +4,3 @@ This module keeps track of some important static variables that are used through
 import os
 
 ROOT_DIR = os.path.dirname(__file__)
-DEBUG = False

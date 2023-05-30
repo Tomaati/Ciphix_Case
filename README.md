@@ -77,7 +77,7 @@ twitter_handles = df['Text'].str.extract(r'@(\S+)')[0].values
 tweets = df['Text'].str.replace(r'(@\S+)', '', regex=True).values
 
 data = pd.DataFrame(list(zip(twitter_handles, tweets)), columns=['Tag', 'Text']).dropna(subset=['Tag', 'Text'])
-```
+``` 
 
 | Twitter Handle | Tweet                                                                                                                |
 |----------------|----------------------------------------------------------------------------------------------------------------------|
@@ -278,7 +278,7 @@ We can use this information for the following steps;
 
 * We have to clean the data before using it
 * We can filter based on whether we want Customers, Support Staff, or Everyone
-    * This will have to be researched later on.
+    * `Support Staff` & `Everyone` have a lot of similar topics that have little to do with support questions, so filtering on `Custommers` is the best way to get the best support question topics.
 * We have to filter based on word count
 
 ## Back-End
@@ -391,9 +391,7 @@ Using this (short) list of requirements a list of pages was made up and a tree d
     * Should allow to edit topics
     * ~~Create new accounts~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more
       time than allotted to this case.*
-    * ~~Upload new dataset to retrain the model~~ *This is scrapped because it goes outside the scope of the case. As
-      well
-      as requiring more time than allotted to this case.*
+    * ~~Upload new dataset to retrain the model~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more time than allotted to this case.*
 
 ![design_paper.png](images/design_paper.jpg)
 

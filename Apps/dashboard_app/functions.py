@@ -1,20 +1,16 @@
-from apps.dashboard_app.models import Topic_Conversation
+from Apps.dashboard_app.models import Topic_Conversation
+from Backend.Predictor import TopicPredictor
 
-from main import predict_list, predict
-
-
-def handle_csv(file):
-    return [line.decode() for line in file]
+predictor = TopicPredictor()
 
 
 def predict_csv(file):
-    data = handle_csv(file)
-    predictions = predict_list(data)
+    predictions = predictor.predict_list([line.decode() for line in file])
+    topics = [Topic_Conversation(conversation=text, topic_id_id=topic) for text, topic in predictions]
 
-    Topic_Conversation.objects.bulk_create(
-        [Topic_Conversation(conversation=text, topic_id_id=topic) for text, topic in predictions])
+    Topic_Conversation.objects.bulk_create(topics)
 
 
 def predict_solo(text):
-    text, topic = predict(text)
+    text, topic = predictor.predict(text)
     Topic_Conversation(conversation=text, topic_id_id=topic).save()

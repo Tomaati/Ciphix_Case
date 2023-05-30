@@ -6,6 +6,9 @@ import joblib
 import numpy as np
 
 import config
+from Backend.Preprocessor import Preprocessor
+
+cleaner = Preprocessor()
 
 
 class TopicPredictor:
@@ -33,7 +36,7 @@ class TopicPredictor:
             self.topics.append(' '.join(important_features))
 
     def predict_topic(self, data):
-        data = [x.strip() for x in data]
+        data = cleaner.preprocess_solo(data.strip())
         vector = self.vector.transform(data)
         nmf = self.nmf.transform(vector)
 
@@ -41,5 +44,8 @@ class TopicPredictor:
 
         return topic
 
-    def predict_list_topic(self, data):
-        return [self.predict_topic(x) for x in data]
+    def predict(self, text):
+        return text, self.predict_topic(text)
+
+    def predict_list(self, text_list):
+        return [self.predict(x) for x in text_list]
