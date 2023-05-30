@@ -1,26 +1,29 @@
 # Readme
 
 * [Exploratory Data Analysis](#exploratory-data-analysis)
-  * [Loading in the data](#loading-in-the-data)
-  * [Explore summarizing values](#explore-summarizing-values)
-  * [Company & Customer information](#company--customer-information)
-  * [Relevant Sentences](#relevant-sentences)
-  * [Conclusion](#conclusion)
+    * [Loading in the data](#loading-in-the-data)
+    * [Explore summarizing values](#explore-summarizing-values)
+    * [Company & Customer information](#company--customer-information)
+    * [Relevant Sentences](#relevant-sentences)
+    * [Conclusion](#conclusion)
 * [Back-End](#back-end)
-  * [Pre-Processing](#important-steps-for-pre-processing)
-  * [Creating Model](#important-steps-for-creating-model)
-  * [New Conversation Classification](#important-steps-for-new-conversation-classification)
+    * [Pre-Processing](#important-steps-for-pre-processing)
+    * [Creating Model](#important-steps-for-creating-model)
+    * [New Conversation Classification](#important-steps-for-new-conversation-classification)
 * [Front-End](#front-end)
-  * [Login Page](#login-page)
-  * [Admin Dashboard](#admin-dashboard)
-  * [Settings](#settings)
-  * [General Implementation Strategy](#general-implementation-strategy)
-  * [Database Design](#database-design)
+    * [Login Page](#login-page)
+    * [Admin Dashboard](#admin-dashboard)
+    * [Settings](#settings)
+    * [General Implementation Strategy](#general-implementation-strategy)
+    * [Database Design](#database-design)
 
 ## Exploratory Data Analysis
-In order to get a good idea on how to tackle the implementation of topic classification we have to take a quick look at what type of data we are currently using.
+
+In order to get a good idea on how to tackle the implementation of topic classification we have to take a quick look at
+what type of data we are currently using.
 
 ### Loading in the data
+
 Before exploring the data we first need to load it in.
 
 ```python
@@ -275,7 +278,7 @@ We can use this information for the following steps;
 
 * We have to clean the data before using it
 * We can filter based on whether we want Customers, Support Staff, or Everyone
-  * This will have to be researched later on.
+    * This will have to be researched later on.
 * We have to filter based on word count
 
 ## Back-End
@@ -292,52 +295,72 @@ the NLP and ML pipeline to work efficiently.
 
 * Look at all the different user tags, and decide which are companies and which are users. For this example it is
   assumed that the tweets with **@\<numerical\>** are tweets sent by a company to the user with **@\<numerical\>**.
-  * This can be used to train either on customers, support staff, or both.
-  * For this example I've trained on ...
+    * This can be used to train either on customers, support staff, or both.
+    * For this example I've trained on ...
 * Remove all duplicate tweets.
 * Remove all 'useless' characters using the `Preprocessor` class.
-  * `clean_text` will remove all the useless characters using Regex
-  * `clean_df` will filter employees and message size for training purposes
-  * `preprocess` will filter for the important words (mainly `Proper Noun`, `Noun`, and `Verb`), and save the lemma for each
+    * `clean_text` will remove all the useless characters using Regex
+    * `clean_df` will filter employees and message size for training purposes
+    * `preprocess` will filter for the important words (mainly `Proper Noun`, `Noun`, and `Verb`), and save the lemma
+      for each
 
-For this preprocessing step regex was used, since it turned out to be way quicker than cleaning with SpaCy, and resulted in a good enough baseline to continue with.
+For this preprocessing step regex was used, since it turned out to be way quicker than cleaning with SpaCy, and resulted
+in a good enough baseline to continue with.
 
 #### Methods for Speeding up the Pre-Processing
+
 * Filter Optimization
     * Using Regex to filter before trying to run Spacy to lemmatize/filter
 * Minimize the use of apply (this is often slower than a for loop)
 
 ### Important Steps for Creating Model
-For creating a model it is very important to understand the various different models that could be used for topic classification.
+
+For creating a model it is very important to understand the various different models that could be used for topic
+classification.
 
 First we have to decide on what type of Vectorizer to use, scikit-learn contains various vectorizers, such as:
+
 * `CountVectorizer`, which converts a collection of text documents to a matrix of word counts.
 * `TfidfVectorizer`, which converts a collection of text documents to a matrix of TF-IDF features.
 * `HashingVectorizer`, which converts a collection of text documents to a matrix of word occurrences.
 
-The `HashingVectorizer` performs best on very large datasets, since it does not rely on a vocabulary (or library) to count, but this also means that you have no use for the resulting dictionary of tokens. `TF-IDF` penalises the words that appear more frequent in the entire dataset, but this is not useful when deciding on what terms came across the most.
-Because of these reasons `CountVectorizer` was chosen for this case, since the dataset is not too big, and `TF-IDF` is not useful because we should be dealing with raw counts; this also became clear when testing, the topics for `TF-IDF` were less coherent than the topics generated by `CountVector`.
+The `HashingVectorizer` performs best on very large datasets, since it does not rely on a vocabulary (or library) to
+count, but this also means that you have no use for the resulting dictionary of tokens. `TF-IDF` penalises the words
+that appear more frequent in the entire dataset, but this is not useful when deciding on what terms came across the
+most.
+Because of these reasons `CountVectorizer` was chosen for this case, since the dataset is not too big, and `TF-IDF` is
+not useful because we should be dealing with raw counts; this also became clear when testing, the topics for `TF-IDF`
+were less coherent than the topics generated by `CountVector`.
 
 After this we have to decide on what type of model to use for this case, various of these models are described in:
->Egger, R., & Yu, J. (2022). A Topic Modeling Comparison Between LDA, NMF, Top2Vec, and BERTopic to Demystify Twitter Posts. In Frontiers in Sociology (Vol. 7). Frontiers Media SA. https://doi.org/10.3389/fsoc.2022.886498 
+> Egger, R., & Yu, J. (2022). A Topic Modeling Comparison Between LDA, NMF, Top2Vec, and BERTopic to Demystify Twitter
+> Posts. In Frontiers in Sociology (Vol. 7). Frontiers Media SA. https://doi.org/10.3389/fsoc.2022.886498
 
-According to this paper it is best to use `NMF`, since both `BERTopic` and `Top2Vec` require prior knowledge of the dataset ((semi-)supervised learning) and `LDA` performed worse than `NMF` on short tweets and requires a lot of hyperparameter tuning in order to work optimally.
+According to this paper it is best to use `NMF`, since both `BERTopic` and `Top2Vec` require prior knowledge of the
+dataset ((semi-)supervised learning) and `LDA` performed worse than `NMF` on short tweets and requires a lot of
+hyperparameter tuning in order to work optimally.
 
-After creating the model it is important to also save it, so it can be re-used later on for determining the topics of new conversations, in order to do this the `joblib` package was used, since it is advised to used by the `scikit-learn` documentation, the other widely used package, `pickle`, often is slower for very large arrays.
+After creating the model it is important to also save it, so it can be re-used later on for determining the topics of
+new conversations, in order to do this the `joblib` package was used, since it is advised to used by the `scikit-learn`
+documentation, the other widely used package, `pickle`, often is slower for very large arrays.
 
 #### Methods for Speeding up the Model Creation
+
 * Hyperparameter Tuning
 
 ### Important Steps for New Conversation Classification
-For predicting topics of new conversations it is important to work with the previously created models. In order to do this the following steps were taken to predict the topics:
+
+For predicting topics of new conversations it is important to work with the previously created models. In order to do
+this the following steps were taken to predict the topics:
 
 * Load the `joblib` files in order to create the `CountVectorizer` and `NMF` models.
 * Initialize the topic keywords, by finding the most important feature names using the `Vectorizer` and `NMF`.
 * To predict the eventual topic the following steps were needed:
-  * Pre-Process the input
-  * Transform the input using the `CountVectorizer` and `NMF`, this gives the eventual weights of each topic in relation
-    to the conversation.
-  * Find the topic with the highest weight, this will be the most likely topic of the conversation.
+    * Pre-Process the input
+    * Transform the input using the `CountVectorizer` and `NMF`, this gives the eventual weights of each topic in
+      relation
+      to the conversation.
+    * Find the topic with the highest weight, this will be the most likely topic of the conversation.
 
 #### Methods for Speeding up the Classification
 
@@ -361,15 +384,16 @@ Using this (short) list of requirements a list of pages was made up and a tree d
 
 * Login Page
 * Dashboard home screen
-  * Show overview of information in a graph
-  * Show detailed information in a table
-  * Allow admins to upload new conversations
+    * Show overview of information in a graph
+    * Show detailed information in a table
+    * Allow admins to upload new conversations
 * Settings Screen
-  * Should allow to edit topics
-  * ~~Create new accounts~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more
-    time than allotted to this case.*
-  * ~~Upload new dataset to retrain the model~~ *This is scrapped because it goes outside the scope of the case. As well
-    as requiring more time than allotted to this case.*
+    * Should allow to edit topics
+    * ~~Create new accounts~~ *This is scrapped because it goes outside the scope of the case. As well as requiring more
+      time than allotted to this case.*
+    * ~~Upload new dataset to retrain the model~~ *This is scrapped because it goes outside the scope of the case. As
+      well
+      as requiring more time than allotted to this case.*
 
 ![design_paper.png](images/design_paper.jpg)
 
@@ -399,8 +423,8 @@ dashboard:
 
 * Quick overview area - *These are mostly interesting facts about the data on the dashboard (Note, this is just an
   example)*
-  * Total Topics
-  * Total Conversations
+    * Total Topics
+    * Total Conversations
 * Deep Information area - *This is a table with all conversations added by the admin with their topics*
 * (Bulk) adding Conversations - *This should be a button that opens a form to upload more data to be processed*
 
@@ -435,13 +459,13 @@ they are better to understand.
 Since Django is a new framework for me, I've implemented the design using the following steps:
 
 * Implement the pages using basic html (without CSS).
-  * Implement simple authentication
-  * Implement showing of Graphs using `GraphJS`
-  * Implement showing of Table from `sqlite`
-  * Implement uploading new data to `sqlite`
-  * Implement editing data from `sqlite`
+    * Implement simple authentication
+    * Implement showing of Graphs using `GraphJS`
+    * Implement showing of Table from `sqlite`
+    * Implement uploading new data to `sqlite`
+    * Implement editing data from `sqlite`
 * Design the pages by creating CSS based on the `Figma` designs mentioned above.
-  * _Note, these designs are a little more simple in the eventual web application due to time constraints._
+    * _Note, these designs are a little more simple in the eventual web application due to time constraints._
 
 Each page was first written in plain HTML, after that was all working perfectly, the CSS code was written using both
 Bootstrap and Custom CSS to create the look and feel of the application.

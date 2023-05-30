@@ -31,10 +31,10 @@
                 <form method="post" action="{% url 'login' %}">
                     {% csrf_token %}
                     <label>{{ form.username.label_tag }}</label>
-                    <div>{{ form.username | add_class:"admin-login-input"}}</div>
+                    <div>{{ form.username | add_class:"admin-login-input" }}</div>
                     <br>
                     <label>{{ form.password.label_tag }}</label>
-                    <div>{{ form.password | add_class:"admin-login-input"}}</div>
+                    <div>{{ form.password | add_class:"admin-login-input" }}</div>
                     <br>
                     <br>
                     <input type="submit" class="admin-login-button" value="login">

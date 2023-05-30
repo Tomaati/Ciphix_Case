@@ -4,10 +4,8 @@ in model.py
 """
 import joblib
 import numpy as np
-import pandas as pd
 
 import config
-from Backend.Preprocessor import Preprocessor
 
 
 class TopicPredictor:

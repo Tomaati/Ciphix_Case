@@ -13,6 +13,7 @@ class TopicModel:
     """
     This class creates a Model based on the data provided by Ciphix.
     """
+
     def __init__(self, df, topic_count=10):
         self.df = Preprocessor().clean_df(df)
         self.topic_count = topic_count
