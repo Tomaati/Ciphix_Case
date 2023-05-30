@@ -1,5 +1,6 @@
 # Readme
 
+* [Running & Deploying](#running-&-deploying)
 * [Exploratory Data Analysis](#exploratory-data-analysis)
     * [Loading in the data](#loading-in-the-data)
     * [Explore summarizing values](#explore-summarizing-values)
@@ -16,6 +17,19 @@
     * [Settings](#settings)
     * [General Implementation Strategy](#general-implementation-strategy)
     * [Database Design](#database-design)
+
+## Running & Deploying
+The webapp is currently hosted on [ciphix.hhhserver.online](ciphix.hhhserver.online), this is my own server and can only be accesssed from the Netherlands (so check your VPN). It is not the quickest server, but it should give a proper idea on what the webapp will run like.
+
+In order to run the program you can login with `username: admin` & `password: password`.
+
+### Deploy on your own Server or Machine
+The webapp can easily be deployed using [Docker](https://www.docker.com/), first make sure it is installed and added to your PATH variable (if on windows).
+After that do the following:
+```powershell
+docker build -t ciphix-topic
+docker run 
+```
 
 ## Exploratory Data Analysis
 
