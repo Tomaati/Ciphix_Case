@@ -1,9 +1,9 @@
 from django.db.models import Count
 from django.shortcuts import render
 
-from dashboard_app.forms import FileForm
-from dashboard_app.functions import predict_csv, predict_solo
-from dashboard_app.models import Topic_Conversation
+from Apps.dashboard_app.forms import FileForm
+from Apps.dashboard_app.functions import predict_csv, predict_solo
+from Apps.dashboard_app.models import Topic_Conversation
 
 
 # Create your views here.

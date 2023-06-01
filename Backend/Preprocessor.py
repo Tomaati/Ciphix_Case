@@ -35,30 +35,29 @@ class Preprocessor:
     """
 
     def __init__(self):
-        self.model = spacy.load('en_core_web_sm')
+        self.model = spacy.load('en_core_web_sm', disable=["parser", "ner", "textcat"])
 
     def clean_df(self, data):
-        # Check if a username is related to a company or a customer, only keep customers.
-        data['Is_Employee'] = data['Tag'].str.isnumeric()
-        data = data[~data['Is_Employee']]
+        # Remove all duplicate rows to speed up all further calculations
+        data = data.drop_duplicates()
+        print(f'Done Removing Duplicates. {len(data.index)} left.')
 
-        print('Done Checking Employees')
+        # Check if a username is related to a company or a customer, only keep customers.
+        data = data[~data['Tag'].str.isnumeric()]
+        print(f'Done Checking Employees. {len(data.index)} left.')
 
         # Count the words, and only keep relevant text by removing short tweets.
         min_count = 3
         data = data[data['Text'].str.split(' ').str.len() > min_count]
-
-        print('Done Checking Word Count')
+        print(f'Done Checking Word Count. {len(data.index)} left.')
 
         # Clean the remaining data using various regex patterns
         data['Clean'] = data['Text'].apply(clean_text)
-
-        print('Done Cleaning')
+        print(f'Done Cleaning. {len(data.index)} left.')
 
         # Pre-process the data using Spacy
         data['Preprocessed'] = self.preprocess(data['Clean'])
-
-        print('Done Preprocessing the data')
+        print(f'Done Preprocessing the data. {len(data.index)} left.')
 
         return data
 
@@ -71,6 +70,9 @@ class Preprocessor:
                                                                        and token not in self.model.Defaults.stop_words))
             output.append(lemma.lower())
         return output
+
+    def preprocess_solo(self, text):
+        return self.preprocess([clean_text(text)])
 
 
 def clean_text(text):

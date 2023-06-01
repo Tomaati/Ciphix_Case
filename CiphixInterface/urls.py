@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from dashboard_app import views as dashboard
-from login_app import views as login
-from settings_app import views as settings
+from Apps.dashboard_app import views as dashboard
+from Apps.login_app import views as login
+from Apps.settings_app import views as settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),

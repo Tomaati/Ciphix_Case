@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
 
-from dashboard_app.views import summarizing_table_graph as sv
+from Apps.dashboard_app.views import summarizing_table_graph as sv
 
 
 def signin(request):

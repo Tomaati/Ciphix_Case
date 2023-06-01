@@ -13,6 +13,7 @@ class TopicModel:
     """
     This class creates a Model based on the data provided by Ciphix.
     """
+
     def __init__(self, df, topic_count=10):
         self.df = Preprocessor().clean_df(df)
         self.topic_count = topic_count
@@ -23,5 +24,5 @@ class TopicModel:
         self.data_nmf = self.nmf.fit_transform(self.data_vector)
 
     def save_model(self):
-        joblib.dump(self.nmf, f'{config.ROOT_DIR}\\models\\nmf.joblib')
-        joblib.dump(self.vector, f'{config.ROOT_DIR}\\models\\vector.joblib')
+        joblib.dump(self.nmf, f'{config.ROOT_DIR}/models/nmf.joblib')
+        joblib.dump(self.vector, f'{config.ROOT_DIR}/models/vector.joblib')
