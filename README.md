@@ -19,7 +19,7 @@
     * [Database Design](#database-design)
 
 ## Running & Deploying
-The webapp is currently hosted on [ciphix.hhhserver.online](ciphix.hhhserver.online), this is my own server and can only be accesssed from the Netherlands (so check your VPN). It is not the quickest server, but it should give a proper idea on what the webapp will run like.
+The webapp is currently hosted on [ciphix.hhhserver.online](https://ciphix.hhhserver.online), this is my own server and can only be accesssed from the Netherlands (so check your VPN). It is not the quickest server, but it should give a proper idea on what the webapp will run like.
 
 In order to run the program you can login with `username: admin` & `password: password`.
 
