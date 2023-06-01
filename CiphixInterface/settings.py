@@ -29,8 +29,11 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'predictor.hhhserver.online',
+    'ciphix.hhhserver.online',
     '*']
+
+CSRF_TRUSTED_ORIGINS = ['https://ciphix.hhhserver.online']
+
 
 # Application definition
 
